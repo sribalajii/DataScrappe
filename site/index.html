@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="DataScrappe — verified, source-backed dataset builder for research, ML and AI workflows." />
+  <title>DataScrappe — Build source-backed datasets</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="orb orb-a"></div><div class="orb orb-b"></div>
+  <header class="nav wrap">
+    <a class="brand" href="#top"><span class="brand-mark">D</span><span>DataScrappe</span></a>
+    <nav><a href="#features">Features</a><a href="#trial">Trial</a><a href="#download">Download</a><a href="#pricing">Pricing</a></nav>
+    <a class="btn btn-small" href="#trial">Try free</a>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="eyebrow">LOCAL-FIRST • SOURCE-BACKED • NO FABRICATED ROWS</div>
+      <h1>Turn a topic into a<br><span>usable dataset.</span></h1>
+      <p class="lead">DataScrappe discovers public data, research, news and reference sources, filters duplicates, keeps provenance and exports structured datasets for AI, ML and analysis.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#trial">Run web trial</a>
+        <a class="btn btn-ghost" href="#download">Download desktop</a>
+      </div>
+      <div class="trust-row"><span>✓ Windows</span><span>✓ Linux</span><span>✓ macOS</span><span>✓ CSV / Excel / JSON / TXT</span></div>
+    </section>
+
+    <section class="product-shell wrap">
+      <div class="window-bar"><span></span><span></span><span></span><b>DataScrappe Desktop</b></div>
+      <div class="desktop-preview">
+        <aside>
+          <div class="logo-tile">DS</div><div class="side-label">DATASET BUILDER</div>
+          <div class="side-item active">New dataset</div><div class="side-item">Saved runs</div><div class="side-item">Sources</div><div class="side-item">Settings</div>
+        </aside>
+        <div class="app-main">
+          <div class="app-kicker">Create verified dataset</div>
+          <h2>What do you want to research?</h2>
+          <div class="fake-input">AI chip market 2026 <span>⌕</span></div>
+          <div class="controls"><div><label>Dataset size</label><strong>2,000</strong></div><div><label>Source quality</label><strong>Verified + broad</strong></div><div><label>Export</label><strong>CSV</strong></div></div>
+          <button class="fake-run">Search & build dataset</button>
+          <div class="progress-card"><div class="progress-top"><b>Discovery in progress</b><span>1,284 candidates</span></div><div class="bar"><i></i></div><div class="progress-meta"><span>742 source-backed rows</span><span>ETA 03:18</span></div></div>
+        </div>
+      </div>
+      <p class="preview-note">Desktop UI preview based on the current PyQt application. The downloadable build uses the native desktop interface.</p>
+    </section>
+
+    <section id="features" class="section wrap">
+      <div class="section-head"><div><span class="eyebrow">WHY DATASCRAPPE</span><h2>Built for data quality, not just scraping volume.</h2></div></div>
+      <div class="grid features">
+        <article><div class="icon">01</div><h3>Source-backed records</h3><p>Keeps source URL, source name and provenance wherever available.</p></article>
+        <article><div class="icon">02</div><h3>Multi-source discovery</h3><p>Research, datasets, public APIs, news, community and web discovery lanes.</p></article>
+        <article><div class="icon">03</div><h3>Quality gates</h3><p>Relevance checks and deduplication happen before records reach your export.</p></article>
+        <article><div class="icon">04</div><h3>Local AI planning</h3><p>Optional Ollama/Gemma planning can expand a topic without sending your prompt to a hosted LLM.</p></article>
+        <article><div class="icon">05</div><h3>Practical exports</h3><p>Save data as CSV, Excel, JSON or TXT and continue work across sessions.</p></article>
+        <article><div class="icon">06</div><h3>Respectful access</h3><p>No bypassing authentication, paywalls, CAPTCHAs or access controls.</p></article>
+      </div>
+    </section>
+
+    <section id="trial" class="section wrap trial-section">
+      <div class="trial-copy"><span class="eyebrow">FREE BROWSER TRIAL</span><h2>Try a real search before downloading.</h2><p>The web trial intentionally uses a limited public Wikipedia adapter and returns up to 10 records. The desktop edition contains the broader acquisition pipeline.</p><ul><li>No account required</li><li>10-record cap</li><li>Source URLs included</li><li>CSV download from browser</li></ul></div>
+      <div class="trial-card">
+        <label for="topic">Topic</label>
+        <div class="trial-input-row"><input id="topic" maxlength="120" placeholder="e.g. renewable energy India"/><button id="runTrial">Run trial</button></div>
+        <div id="trialStatus" class="status">Ready.</div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Title</th><th>Source</th></tr></thead><tbody id="results"><tr><td colspan="3" class="empty">Your results will appear here.</td></tr></tbody></table></div>
+        <button id="csvBtn" class="csv-btn" disabled>Download trial CSV</button>
+      </div>
+    </section>
+
+    <section id="download" class="section wrap">
+      <div class="section-head"><div><span class="eyebrow">DESKTOP</span><h2>Download for your operating system.</h2></div><p>Native release files are produced by GitHub Actions on Windows, Ubuntu and macOS runners.</p></div>
+      <div class="grid downloads">
+        <article><b>Windows</b><span>.exe / .zip</span><a href="https://github.com/sribalajii/DataScrappe/releases/tag/beta-latest">Latest release →</a></article>
+        <article><b>Linux</b><span>binary / .tar.gz</span><a href="https://github.com/sribalajii/DataScrappe/releases/tag/beta-latest">Latest release →</a></article>
+        <article><b>macOS</b><span>.app / .zip</span><a href="https://github.com/sribalajii/DataScrappe/releases/tag/beta-latest">Latest release →</a></article>
+      </div>
+      <div class="source-link">Prefer source code? <a href="https://github.com/sribalajii/DataScrappe">View DataScrappe on GitHub</a></div>
+    </section>
+
+    <section id="pricing" class="section wrap pricing">
+      <div><span class="eyebrow">LAUNCH MODEL</span><h2>Start free. Monetize after people trust it.</h2><p>Recommended launch: browser trial + free desktop beta first, then add a paid Pro license once crash reporting, updater, licensing and support are ready.</p></div>
+      <div class="price-card"><div class="badge">BETA</div><h3>Desktop Beta</h3><div class="price">₹0 <span>for launch</span></div><p>Build an audience and collect feedback before charging.</p><a class="btn" href="#download">Get beta</a></div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><b>DataScrappe</b><p>Public-source dataset builder for research and AI workflows.</p></div><div class="footer-links"><a href="https://github.com/sribalajii/DataScrappe">GitHub</a><a href="#trial">Trial</a><a href="#download">Download</a></div></div><div class="wrap legal">Use only on data you are legally permitted to access. Respect website terms, robots policies, privacy rights and applicable law.</div></footer>
+  <script src="/app.js"></script>
+</body>
+</html>
