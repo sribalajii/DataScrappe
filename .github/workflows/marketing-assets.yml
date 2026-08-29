@@ -1,0 +1,35 @@
+name: Generate marketing assets
+on:
+  workflow_dispatch:
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    env:
+      DATASCRAPPE_SOURCE_ZIP_B64: ${{ secrets.DATASCRAPPE_SOURCE_ZIP_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Restore private app source
+        run: |
+          python -c "import os,base64,pathlib; raw=os.environ.get('DATASCRAPPE_SOURCE_ZIP_B64',''); assert raw, 'Missing DATASCRAPPE_SOURCE_ZIP_B64 repository secret'; pathlib.Path('app-source.zip').write_bytes(base64.b64decode(raw))"
+          mkdir -p app
+          python -m zipfile -e app-source.zip app
+      - name: Install capture dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb ffmpeg libxcb-xinerama0
+          python -m pip install --upgrade pip
+          pip install -r app/requirements.txt
+      - name: Capture real PyQt UI states
+        working-directory: app
+        env:
+          MARKETING_OUT: ../marketing
+        run: xvfb-run -a python ../tools/capture_marketing.py
+      - name: Create walkthrough video
+        run: ffmpeg -y -framerate 0.5 -i marketing/frame%02d.png -vf "scale=1280:-2,format=yuv420p" -c:v libx264 -r 30 marketing/DataScrappe-demo.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DataScrappe-marketing-assets
+          path: marketing/
