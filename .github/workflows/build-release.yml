@@ -1,0 +1,75 @@
+name: Build desktop beta
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'source/**'
+      - '.github/workflows/build-release.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            label: windows
+          - os: ubuntu-latest
+            label: linux
+          - os: macos-latest
+            label: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Restore app source
+        shell: bash
+        run: |
+          mkdir -p app
+          base64 --decode source/DataScrappe-source.zip.b64 > app-source.zip
+          python -m zipfile -e app-source.zip app
+      - name: Install dependencies
+        working-directory: app
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+      - name: Build native app
+        working-directory: app
+        run: pyinstaller --noconfirm --clean --windowed --name DataScrappe main.py
+      - name: Pack artifact
+        shell: python
+        run: |
+          import os, zipfile
+          from pathlib import Path
+          src=Path('app/dist/DataScrappe')
+          if os.name=='nt': src=Path('app/dist/DataScrappe.exe')
+          out=Path('DataScrappe-${{ matrix.label }}.zip')
+          with zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED) as z:
+              if src.is_dir():
+                  for p in src.rglob('*'):
+                      if p.is_file(): z.write(p,p.relative_to(src.parent))
+              else:
+                  z.write(src,src.name)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DataScrappe-${{ matrix.label }}
+          path: DataScrappe-${{ matrix.label }}.zip
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: DataScrappe-*
+          merge-multiple: true
+          path: release
+      - name: Publish rolling beta release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete beta-latest --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
+          gh release create beta-latest release/* --repo "$GITHUB_REPOSITORY" --title "DataScrappe Beta" --notes "Automated Windows, Linux and macOS beta builds. Use only on data you are permitted to access." --prerelease
