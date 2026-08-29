@@ -1,11 +1,6 @@
 name: Build desktop beta
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'source/**'
-      - '.github/workflows/build-release.yml'
 permissions:
   contents: write
 jobs:
@@ -21,16 +16,18 @@ jobs:
           - os: macos-latest
             label: macos
     runs-on: ${{ matrix.os }}
+    env:
+      DATASCRAPPE_SOURCE_ZIP_B64: ${{ secrets.DATASCRAPPE_SOURCE_ZIP_B64 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Restore app source
+      - name: Restore private app source
         shell: bash
         run: |
+          python -c "import os,base64,pathlib; raw=os.environ.get('DATASCRAPPE_SOURCE_ZIP_B64',''); assert raw, 'Missing DATASCRAPPE_SOURCE_ZIP_B64 repository secret'; pathlib.Path('app-source.zip').write_bytes(base64.b64decode(raw))"
           mkdir -p app
-          base64 --decode source/DataScrappe-source.zip.b64 > app-source.zip
           python -m zipfile -e app-source.zip app
       - name: Install dependencies
         working-directory: app
